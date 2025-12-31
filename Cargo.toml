@@ -1,0 +1,25 @@
+[package]
+name = "vote-backend"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# 1. 비동기 런타임 (Node.js의 libuv 같은 존재)
+tokio = { version = "1.0", features = ["full"] }
+
+# 2. 웹 프레임워크 (Express 같은 존재)
+axum = "0.7"
+
+# 3. DB 드라이버 & ORM 기능
+# postgres: PG 지원
+# runtime-tokio: 비동기 런타임 사용
+# uuid, chrono: DB의 UUID, 날짜 타입 지원
+sqlx = { version = "0.8", features = ["runtime-tokio", "postgres", "uuid", "chrono"] }
+
+# 4. JSON 처리 (Python의 json 모듈)
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# 5. UUID, 날짜 처리
+uuid = { version = "1.0", features = ["serde", "v4"] }
+chrono = { version = "0.4", features = ["serde"] }
