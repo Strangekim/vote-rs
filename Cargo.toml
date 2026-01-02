@@ -4,22 +4,24 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-# 1. 비동기 런타임 (Node.js의 libuv 같은 존재)
-tokio = { version = "1.0", features = ["full"] }
+# 1. 비동기 런타임 (Node.js의 libuv)
+tokio = { version = "1", features = ["full"] }
 
-# 2. 웹 프레임워크 (Express 같은 존재)
+# 2. 웹 프레임워크 (Express)
 axum = "0.7"
 
 # 3. DB 드라이버 & ORM 기능
-# postgres: PG 지원
-# runtime-tokio: 비동기 런타임 사용
-# uuid, chrono: DB의 UUID, 날짜 타입 지원
-sqlx = { version = "0.8", features = ["runtime-tokio", "postgres", "uuid", "chrono"] }
+# macros: SQL 문법을 컴파일 타임에 체크하기 위해 필수! (⭐ 중요)
+# runtime-tokio-rustls: 보안 연결(TLS) 지원 포함 (일반적인 셋팅)
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "postgres", "macros", "uuid", "chrono"] }
 
-# 4. JSON 처리 (Python의 json 모듈)
+# 4. JSON 처리
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 
-# 5. UUID, 날짜 처리
+# 5. 환경변수 로드 (Node.js의 dotenv)
+dotenvy = "0.15"
+
+# 6. 타입 지원
 uuid = { version = "1.0", features = ["serde", "v4"] }
 chrono = { version = "0.4", features = ["serde"] }
