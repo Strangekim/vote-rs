@@ -8,7 +8,7 @@ pub struct SignupRequest {
 }
 
 // [Response] 응답 데이터
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct UserResponse {
     pub id: Uuid,
     pub username: String,
