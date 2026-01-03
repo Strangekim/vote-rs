@@ -23,7 +23,7 @@ pub async fn exist_by_username(pool: &PgPool, username: &str) -> Result<bool, sq
 }
 
 // 2. 유저 생성 (INSERT)
-pub async fn save_user(pool: &PgPool, username: String) -> Result<Uuid, sqlx::Error> {
+pub async fn save_user(pool: &PgPool, username: &str) -> Result<Uuid, sqlx::Error> {
     let new_id = Uuid::new_v4();
     
     sqlx::query!(

@@ -6,6 +6,7 @@ mod dtos;
 mod repository;
 mod service;
 mod handlers;
+mod error;
 
 pub fn router() -> Router<PgPool> {
     Router::new()
