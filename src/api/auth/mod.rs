@@ -17,7 +17,7 @@ pub mod service;  // pub으로 변경 (테스트에서 접근 가능하도록)
 mod handlers;
 
 #[cfg(test)]
-mod service_test;  // 테스트 모듈 등록
+mod test;
 
 pub fn router() -> Router<PgPool> {
     Router::new()

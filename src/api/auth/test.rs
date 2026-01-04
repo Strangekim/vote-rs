@@ -1,7 +1,4 @@
-/// Service 레이어 Unit Tests
-///
-/// DB 없이 Mock Repository를 사용하여 테스트
-/// 실행: cargo test
+/// Service 레이어 Unit Tests - DB 없이 Mock으로 테스트
 
 use super::service::sign_up;
 use super::error::AuthServiceError;
@@ -9,10 +6,10 @@ use super::repository_trait::UserRepository;
 use async_trait::async_trait;
 use uuid::Uuid;
 
-/// 테스트용 Mock Repository
+/// Mock Repository: DB 대신 가짜 데이터 반환
 struct MockUserRepository {
-    should_exist: bool,     // 중복 사용자 시뮬레이션
-    save_should_fail: bool, // DB 에러 시뮬레이션
+    should_exist: bool,     // true면 중복 사용자
+    save_should_fail: bool, // true면 DB 저장 실패
 }
 
 #[async_trait]
@@ -30,11 +27,12 @@ impl UserRepository for MockUserRepository {
     }
 }
 
+// 테스트 1: 정상 회원가입
 #[tokio::test]
 async fn test_signup_success() {
     let mock_repo = MockUserRepository {
-        should_exist: false,
-        save_should_fail: false,
+        should_exist: false,     // 중복 없음
+        save_should_fail: false, // 저장 성공
     };
 
     let result = sign_up(&mock_repo, "john".to_string()).await;
@@ -43,10 +41,11 @@ async fn test_signup_success() {
     assert_eq!(result.unwrap().username, "john");
 }
 
+// 테스트 2: 중복 사용자 에러
 #[tokio::test]
 async fn test_signup_duplicate_user() {
     let mock_repo = MockUserRepository {
-        should_exist: true,
+        should_exist: true,      // 이미 존재
         save_should_fail: false,
     };
 
@@ -56,11 +55,12 @@ async fn test_signup_duplicate_user() {
     assert!(matches!(result.unwrap_err(), AuthServiceError::UserAlreadyExists));
 }
 
+// 테스트 3: DB 저장 실패
 #[tokio::test]
 async fn test_signup_database_error() {
     let mock_repo = MockUserRepository {
         should_exist: false,
-        save_should_fail: true,
+        save_should_fail: true, // DB 에러
     };
 
     let result = sign_up(&mock_repo, "john".to_string()).await;
@@ -69,6 +69,7 @@ async fn test_signup_database_error() {
     assert!(matches!(result.unwrap_err(), AuthServiceError::DatabaseError));
 }
 
+// 테스트 4: 빈 username (엣지 케이스)
 #[tokio::test]
 async fn test_signup_empty_username() {
     let mock_repo = MockUserRepository {
@@ -78,6 +79,6 @@ async fn test_signup_empty_username() {
 
     let result = sign_up(&mock_repo, "".to_string()).await;
 
-    // TODO: validation 추가 시 수정 필요
+    // TODO: validation 추가 시 실패하도록 수정
     assert!(result.is_ok());
 }
