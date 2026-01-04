@@ -1,8 +1,8 @@
 /// Service 레이어 Unit Tests - DB 없이 Mock으로 테스트
 
 use super::service::sign_up;
-use super::error::AuthServiceError;
 use super::repository_trait::UserRepository;
+use crate::api::error::AppError;
 use async_trait::async_trait;
 use uuid::Uuid;
 
@@ -52,7 +52,7 @@ async fn test_signup_duplicate_user() {
     let result = sign_up(&mock_repo, "john".to_string()).await;
 
     assert!(result.is_err());
-    assert!(matches!(result.unwrap_err(), AuthServiceError::UserAlreadyExists));
+    assert!(matches!(result.unwrap_err(), AppError::Conflict(_)));
 }
 
 // 테스트 3: DB 저장 실패
@@ -66,7 +66,7 @@ async fn test_signup_database_error() {
     let result = sign_up(&mock_repo, "john".to_string()).await;
 
     assert!(result.is_err());
-    assert!(matches!(result.unwrap_err(), AuthServiceError::DatabaseError));
+    assert!(matches!(result.unwrap_err(), AppError::InternalServerError(_)));
 }
 
 // 테스트 4: 빈 username (엣지 케이스)
