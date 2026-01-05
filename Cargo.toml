@@ -28,3 +28,5 @@ chrono = { version = "0.4", features = ["serde"] }
 
 # 7. Trait에서 async fn을 사용하기 위한 매크로
 async-trait = "0.1"
+jsonwebtoken = "9"
+

@@ -9,7 +9,7 @@ use sqlx::PgPool;
 // - handlers: HTTP 요청 처리
 
 mod dtos;
-mod repository_trait;
+pub mod jwt; // Added
 mod repository;
 pub mod service;  // pub으로 변경 (테스트에서 접근 가능하도록)
 mod handlers;
@@ -20,5 +20,6 @@ mod test;
 pub fn router() -> Router<PgPool> {
     Router::new()
         .route("/signup", post(handlers::signup_handler))
+        .route("/login", post(handlers::login_handler))
         // .route("/login", ...)
 }

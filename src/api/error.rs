@@ -8,10 +8,12 @@ pub struct ErrorResponse {
 }
 
 // 커스텀 에러 타입
+#[derive(Debug)]
 pub enum AppError {
     NotFound(String),
     Conflict(String),
     BadRequest(String),
+    Unauthorized(String),
     InternalServerError(String),
 }
 
@@ -22,6 +24,7 @@ impl IntoResponse for AppError {
             AppError::NotFound(msg) => (StatusCode::NOT_FOUND, msg),
             AppError::Conflict(msg) => (StatusCode::CONFLICT, msg),
             AppError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg),
+            AppError::Unauthorized(msg) => (StatusCode::UNAUTHORIZED, msg),
             AppError::InternalServerError(msg) => (StatusCode::INTERNAL_SERVER_ERROR, msg),
         };
 

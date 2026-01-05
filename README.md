@@ -219,7 +219,28 @@ k6 run script.js
 
 ---
 
-## 📂 Project Structure
+## � API Documentation
+
+### 🔐 Auth
+
+| Method | Endpoint | Summary | Request / Response |
+|:---:|:---|:---|:---|
+| `POST` | **/auth/signup** | 회원가입 | **Req**: `{ "username": "홍길동" }`<br>**Res**: `201 Created` (User) |
+| `POST` | **/auth/login** | 로그인 | **Req**: `{ "username": "홍길동" }`<br>**Res**: `200 OK` `{ "token": "...", "user_id": "...", "username": "..." }` |
+
+### 🗳️ Agendas
+
+| Method | Endpoint | Summary | Request / Response |
+|:---:|:---|:---|:---|
+| `GET` | **/agendas** | 안건 목록 조회 | **Res**: `200 OK` (Agenda List) |
+| `POST` | **/agendas** | 안건 생성 | **Req**: `{ "title": "...", "description": "..." }`<br>**Header**: `Authorization: Bearer <token>` |
+| `POST` | **/agendas/:id/vote** | 찬반 투표 | **Req**: `{ "is_agree": true }`<br>**Header**: `Authorization: Bearer <token>` |
+
+> 자세한 스펙은 [APIDog](https://apidog.com) 프로젝트를 참고하세요.
+
+---
+
+## �📂 Project Structure
 
 > Express 개발자에게 익숙한 구조로 발전시켜 나갈 예정입니다.
 
